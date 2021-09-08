@@ -6,7 +6,7 @@ fn main() {
 
     io::stdin()
         .read_line(&mut server_address)
-        .expect("アドレスが上手く入力されていません");
+        .expect("Failed to read line");
 
     println!("サーバーのサブネットマスクを入力してください");
     let mut server_subnet = String::new();
@@ -29,25 +29,23 @@ fn main() {
         .read_line(&mut client_subnet)
         .expect("サブネットが上手く入力されていません");
 
-    let mut vec1: Vec<&str> = server_address.split('.').collect();
-    let mut vec2: Vec<&str> = server_subnet.split('.').collect();
-    let mut vec3: Vec<&str> = client_address.split('.').collect();
-    let mut vec4: Vec<&str> = client_subnet.split('.').collect();
+    let server_address: Vec<&str> = server_address.split('.').collect();
+    let server_subnet: Vec<&str> = server_subnet.split('.').collect();
+    let client_address: Vec<&str> = client_address.split('.').collect();
+    let client_subnet: Vec<&str> = client_subnet.split('.').collect();
 
-    let num: Vec<i32> = vec1.parse().unwrap();
+    let cnt = 0;
 
-    println!("{}", vec1.len());
-
-    // for i in &mut vec1 {
-    //     println!("{}", i);
-    // }
-    // for j in &mut vec2 {
-    //     println!("{}", j);
-    // }
-    // for x in &mut vec3 {
-    //     println!("{}", x);
-    // }
-    // for y in &mut vec4 {
-    //     println!("{}", y);
-    // }
+    for i in server_address.iter() {
+        i.parse::<i32>().unwrap();
+    }
+    for j in server_subnet.iter() {
+        j.parse::<i32>().unwrap();
+    }
+    for x in client_address.iter() {
+        x.parse::<i32>().unwrap();
+    }
+    for y in client_subnet.iter() {
+        y.parse::<i32>().unwrap();
+    }
 }
