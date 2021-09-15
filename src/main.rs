@@ -32,28 +32,37 @@ fn main() {
     let _client_address: Vec<&str> = client_address.trim().split('.').collect();
     let _client_subnet: Vec<&str> = client_subnet.trim().split('.').collect();
 
-    println!("capacity() = {}", server_address.capacity());
-
     let result_address = calculate_net(server_address, server_subnet);
 
-    println!("{}", result_address);
-    eprint!("{:0>8b}", result_address);
+    println!("\n{}", result_address);
+
+    println!("ネットワークアドレス {:0>8b}", result_address);
 }
 
 fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
-    let mut address = String::new();
-    let mut subnet = String::new();
+    let mut address: i64 = 0;
+    let mut subnet: i64 = 0;
+    let mut j = 3;
+    let mut y = 3;
     let result: i64;
     for i in &addr {
-        address.push_str(i);
-        // println!("{}", type_of(&address));
-        println!("{}", address);
+        while j != -1 {
+            let shift_num = j * 8;
+            address += i.parse::<i64>().unwrap() << shift_num;
+
+            j -= 1;
+            break;
+        }
     }
-    for j in &sub {
-        subnet.push_str(j);
+    for m in &sub {
+        while y != -1 {
+            let mut shift_num = y * 8;
+            subnet += m.parse::<i64>().unwrap() << shift_num;
+
+            y -= 1;
+            break;
+        }
     }
-    let address = address.trim().parse::<i64>().unwrap();
-    let subnet = subnet.trim().parse::<i64>().unwrap();
 
     result = address & subnet;
     result
