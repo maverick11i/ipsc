@@ -68,9 +68,16 @@ fn main() {
         "\n\t\tクライアントNetAddr : {}\n",
         result_client_clone.join(".")
     );
+
+    comp_vec(
+        result_server,
+        result_client,
+        result_server_clone,
+        result_client_clone,
+    );
 }
 
-//シフトして＆演算でネットワーク部を求める && 接続可能か＆で求める
+//シフトして＆演算でネットワーク部を求める
 fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
     let mut address: i64 = 0;
     let mut subnet: i64 = 0;
@@ -114,4 +121,64 @@ fn shift_address(net_add: i64) -> Vec<String> {
         i -= 1;
     }
     result_str
+}
+
+//&演算済みのを接続可能か比較
+fn comp_vec(
+    ser_add1: Vec<String>,
+    ser_add2: Vec<String>,
+    cli_add1: Vec<String>,
+    cli_add2: Vec<String>,
+) {
+    let mut server_address1: i64 = 0;
+    let mut server_address2: i64 = 0;
+    let mut client_address1: i64 = 0;
+    let mut client_address2: i64 = 0;
+    let mut j = 3;
+    let mut y = 3;
+    let mut x = 3;
+    let mut z = 3;
+
+    for i in &ser_add1 {
+        while j != -1 {
+            let shift_num = j * 8;
+
+            server_address1 += i.parse::<i64>().unwrap() << shift_num;
+            j -= 1;
+            break;
+        }
+    }
+    for i in &ser_add2 {
+        while y != -1 {
+            let shift_num = y * 8;
+
+            server_address2 += i.parse::<i64>().unwrap() << shift_num;
+            y -= 1;
+            break;
+        }
+    }
+    for i in &cli_add1 {
+        while x != -1 {
+            let shift_num = x * 8;
+
+            client_address1 += i.parse::<i64>().unwrap() << shift_num;
+            x -= 1;
+            break;
+        }
+    }
+    for i in &cli_add2 {
+        while z != -1 {
+            let shift_num = z * 8;
+
+            client_address2 += i.parse::<i64>().unwrap() << shift_num;
+            z -= 1;
+            break;
+        }
+    }
+
+    if server_address1 == client_address1 && server_address2 == client_address2 {
+        println!("接続可能！");
+    } else {
+        println!("接続不可！");
+    }
 }
