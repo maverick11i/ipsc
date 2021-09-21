@@ -35,12 +35,17 @@ fn main() {
     let result_server = calculate_net(server_address, server_subnet);
     let result_client = calculate_net(client_address, client_subnet);
 
-    // println!("\n{}", result_address);
-
     println!("\nアドレス1 : {:0>8b}", result_server);
     println!("アドレス2 : {:0>8b}", result_client);
+
+    let result_server = shift_address(result_server);
+    let result_client = shift_address(result_client);
+
+    println!("{}", result_server.join("."));
+    println!("{}", result_client.join("."));
 }
 
+//シフトして＆演算でネットワーク部を求める
 fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
     let mut address: i64 = 0;
     let mut subnet: i64 = 0;
@@ -66,12 +71,25 @@ fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
             break;
         }
     }
-
     result = address & subnet;
     result
 }
 
-// fn type_of<T>(_: T) -> String {
-//     let a = std::any::type_name::<T>();
-//     return a.to_string();
-// }
+//ネットワーク部を10進数表記に変換
+fn shift_address(net_add: i64) -> Vec<String> {
+    let mut i: i32 = 3;
+    let mut result: i64;
+    let mut result_str: Vec<String> = Vec::new();
+
+    while i != -1 {
+        let shift_num = i * 8;
+
+        result = (net_add >> shift_num) & 255;
+        result_str.push(result.to_string());
+        i -= 1;
+    }
+    result_str
+}
+
+//接続可能か＆で求める
+fn connection_address() {}
