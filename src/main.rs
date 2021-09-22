@@ -35,57 +35,51 @@ fn main() {
     let client_address: Vec<&str> = client_address.trim().split('.').collect();
     let client_subnet: Vec<&str> = client_subnet.trim().split('.').collect();
 
-    //上のベクタ型をクローン
-    let server_address_clone = server_address.clone();
-    let server_subnet_clone = server_subnet.clone();
-    let client_address_clone = client_address.clone();
-    let client_subnet_clone = client_subnet.clone();
-
     //ベクタ型のドットを外し、数値に変換
-    let result_server = calculate_net(server_address, server_subnet);
-    let connection_server_clone = calculate_net(client_address_clone, server_subnet_clone);
-    let result_client = calculate_net(client_address, client_subnet);
-    let connection_client_clone = calculate_net(server_address_clone, client_subnet_clone);
+    let result_server = calc_net(&server_address, &server_subnet);
+    let connection_server = calc_net(&client_address, &server_subnet);
+    let result_client = calc_net(&client_address, &client_subnet);
+    let connection_client = calc_net(&server_address, &client_subnet);
 
     //サーバ視点のネットワーク部を10進数表記に変換
     let result_server = shift_address(result_server);
-    let result_server_clone = shift_address(connection_server_clone);
+    let connection_server = shift_address(connection_server);
 
     //クライアント視点のネットワーク部を10進数表記に変換
     let result_client = shift_address(result_client);
-    let result_client_clone = shift_address(connection_client_clone);
+    let connection_client = shift_address(connection_client);
 
     //結果出力
     println!("\nサーバー視点 : ");
     eprint!("\t\tサーバNetAddr\t    : {}", result_server.join("."));
     println!(
         "\n\t\tクライアントNetAddr : {}",
-        result_server_clone.join(".")
+        connection_server.join(".")
     );
     println!("\nクライアント視点 : ");
     eprint!("\t\tサーバNetAddr\t    : {}", result_client.join("."));
     println!(
         "\n\t\tクライアントNetAddr : {}\n",
-        result_client_clone.join(".")
+        connection_client.join(".")
     );
 
     //接続可能か比較(文字列型のまま)
-    if result_server == result_client && result_server_clone == result_client_clone {
+    if result_server == result_client && connection_server == connection_client {
         println!("接続可能！");
     } else {
         println!("接続不可！");
     }
 }
 
-//シフトして＆演算でネットワーク部を求める
-fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
+//シフトして＆演算でネットワーク部を求める(所有権は移さず、参照)
+fn calc_net(addr: &Vec<&str>, sub: &Vec<&str>) -> i64 {
     let mut address: i64 = 0;
     let mut subnet: i64 = 0;
     let mut j: i32 = 3;
     let mut y: i32 = 3;
     let result: i64;
 
-    for i in &addr {
+    for i in addr {
         while j != -1 {
             let shift_num = j * 8;
 
@@ -94,7 +88,7 @@ fn calculate_net(addr: Vec<&str>, sub: Vec<&str>) -> i64 {
             break;
         }
     }
-    for m in &sub {
+    for m in sub {
         while y != -1 {
             let shift_num = y * 8;
 
