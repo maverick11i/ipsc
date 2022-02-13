@@ -1,25 +1,45 @@
 use std::io;
 
 fn main() {
-    //標準入力から受け取り
+    let (result_server, connection_server, result_client, connection_client) = input_cmd_line();
+
+    //結果出力
+    println!("\nサーバー視点 : ");
+    eprint!("\t\tサーバNetAddr\t    : {}", result_server.join("."));
+    println!(
+        "\n\t\tクライアントNetAddr : {}",
+        connection_server.join(".")
+    );
+    println!("\nクライアント視点 : ");
+    eprint!("\t\tサーバNetAddr\t    : {}", result_client.join("."));
+    println!(
+        "\n\t\tクライアントNetAddr : {}\n",
+        connection_client.join(".")
+    );
+
+    //接続可能か比較(文字列型のまま)
+    if result_server == result_client && connection_server == connection_client {
+        println!("接続可能！");
+    } else {
+        println!("接続不可！");
+    }
+}
+
+fn input_cmd_line() -> (Vec<String>, Vec<String>, Vec<String>, Vec<String>) {
     eprint!("サーバーのアドレスを入力してください : ");
     let mut server_address = String::new();
-
     io::stdin().read_line(&mut server_address).ok();
 
     eprint!("サーバーのサブネットマスクを入力してください : ");
     let mut server_subnet = String::new();
-
     io::stdin().read_line(&mut server_subnet).ok();
 
     eprint!("クライアントのアドレスを入力してください : ");
     let mut client_address = String::new();
-
     io::stdin().read_line(&mut client_address).ok();
 
     eprint!("クライアントのサブネットマスクを入力してください : ");
     let mut client_subnet = String::new();
-
     io::stdin().read_line(&mut client_subnet).ok();
 
     //入力されたアドレス、サブネットを標準出力
@@ -49,26 +69,12 @@ fn main() {
     let result_client = shift_address(result_client);
     let connection_client = shift_address(connection_client);
 
-    //結果出力
-    println!("\nサーバー視点 : ");
-    eprint!("\t\tサーバNetAddr\t    : {}", result_server.join("."));
-    println!(
-        "\n\t\tクライアントNetAddr : {}",
-        connection_server.join(".")
-    );
-    println!("\nクライアント視点 : ");
-    eprint!("\t\tサーバNetAddr\t    : {}", result_client.join("."));
-    println!(
-        "\n\t\tクライアントNetAddr : {}\n",
-        connection_client.join(".")
-    );
-
-    //接続可能か比較(文字列型のまま)
-    if result_server == result_client && connection_server == connection_client {
-        println!("接続可能！");
-    } else {
-        println!("接続不可！");
-    }
+    (
+        result_server,
+        connection_server,
+        result_client,
+        connection_client,
+    )
 }
 
 //シフトして＆演算でネットワーク部を求める(所有権は移さず、参照)
