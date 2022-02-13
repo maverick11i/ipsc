@@ -75,7 +75,7 @@ fn type_conversion(
     let result_client = shift_address(result_client);
     let connection_client = shift_address(connection_client);
 
-    output_ping_check(
+    output_ping(
         result_server,
         connection_server,
         result_client,
@@ -88,7 +88,7 @@ fn type_conversion(
 ///
 /// 接続可能かも出力
 ///
-fn output_ping_check(
+fn output_ping(
     result_server: Vec<String>,
     connection_server: Vec<String>,
     result_client: Vec<String>,
