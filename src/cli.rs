@@ -31,8 +31,21 @@ impl Cli {
     pub fn run() {
         let cli = Cli::parse();
 
-        if let Some(ipv4) = cli.can_communication.as_deref() {
-            println!("{}", ipv4);
+        // test options
+        if let Some(arp) = cli.arp.as_deref() {
+            println!("{}", arp);
+        }
+
+        if let Some(ping) = cli.ping.as_deref() {
+            println!("{}", ping);
+        }
+
+        if let Some(can_communication) = cli.can_communication.as_deref() {
+            println!("{}", can_communication);
+        }
+
+        if let Some(show_macaddress) = cli.show_macaddress.as_deref() {
+            println!("{}", show_macaddress);
         }
 
         match &cli.command {
